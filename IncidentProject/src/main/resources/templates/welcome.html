@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Target demo pro</title>
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" rel="stylesheet">
+</head>
+<body>
+
+<h1 class="hello-title" style="background-color: aqua ; text-align: center">Welcome to demo project</h1>
+
+<div class="container">
+    <hr>
+
+    <div>
+        <div class="row">
+            <div class="col">
+                <h6>Example scenarios as per shared document: incident workflow system may use this system when each incident ticket moves from one state to anotherincident workflow system may use this system when each incident ticket moves from one state to another</h6>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button class="btn btn-primary" data-bs-target="#exampleModal" data-bs-toggle="modal" type="button">
+                    create new incident
+                </button>
+            </div>
+
+            <div class="col">
+                <button class="btn btn-primary" onclick="emailGetDetails()" type="button">
+                    please provide email details
+                </button>
+            </div>
+        </div>
+
+        <div class="row">
+
+        </div>
+
+
+        <hr/>
+
+        <div class="row">
+            <div class="col">
+                <button onclick="refreashTable()" class="btn btn-warning" type="button">
+                    Refresh Table
+                </button>
+            </div>
+        </div>
+
+        <div id="pro12"></div>
+
+
+
+        <!-- Modal -->
+        <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="exampleModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <form onsubmit="createIncidentForm()">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">create incident form</h5>
+                        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h6 class="modal-title" style="color: red">Note: all fileds are mandatory</h6>
+                        <div class="col">
+                            <label class="form-label">user name</label>
+                            <input class="form-control" id="username" placeholder="please enter your name" required type="text">
+                        </div>
+                        <div class="col">
+                            <label class="form-label">incident details</label>
+                            <input class="form-control" id="incidentDetails" placeholder="details of incident" type="text">
+                        </div>
+                        <div class="col">
+                            <label class="form-label">Impact Type</label>
+                            <input class="form-control" id="impactType" placeholder="ex: low, medium, high" type="text">
+                        </div>
+                        <div class="col">
+                            <label class="form-label">Other Details</label>
+                            <input class="form-control" id="otherDetails" placeholder="like: phone number, email-address" type="text">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Close</button>
+                        <input type="submit" class="btn btn-primary">
+                    </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- Edit Modal -->
+        <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="editModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel">update incident form</h5>
+                        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                    </div>
+
+                    <form onsubmit="editIncidentForm()">
+
+                    <div class="modal-body">
+                        <h6 class="modal-title" style="color: red">Note: <br>
+                        1. please change status from dropdown <br>
+                            2. After change status, email will be sent to provided email details
+                        </h6>
+
+                        <div class="col">
+                            <label class="form-label">Ticket status</label>
+                            <select id="statusTypeId">
+                                <option value="1">new request</option>
+                                <option value="2">work in progress</option>
+                                <option value="3">complete</option>
+                                <option value="4">close</option>
+                            </select>
+                        </div>
+
+                        <input type="hidden" id="editIncidentId"/>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Close</button>
+                        <input type="submit" class="btn btn-primary">
+                    </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Modal -->
+        <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="emailModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="emailModalLabel">Email details form</h5>
+                        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                    </div>
+                    <form onsubmit="emailSaveForm()">
+                    <div class="modal-body">
+                        <h6 class="modal-title" style="color: red">Note:<br/>
+                            1. all fileds are mandatory <br/>
+                            2. please provide valid mail address
+                        </h6>
+
+                        <div class="col">
+                            <label class="form-label">email username (from address)</label>
+                            <input class="form-control" id="emailUsername" placeholder="ex: nsk8147424774@gmail.com" required type="email">
+                        </div>
+                        <div class="col">
+                            <label class="form-label">email password</label>
+                            <input class="form-control" id="emailPassword" placeholder="ex: nitish" type="password">
+                        </div>
+                        <div class="col">
+                            <label class="form-label">mail to address (only one address)</label>
+                            <input class="form-control" id="emailToAddress" placeholder="ex: nsk8147424774@gmail.com" type="email">
+                        </div>
+                        <input type="hidden" id="emailId">
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Close</button>
+                        <input type="submit" class="btn btn-primary" value="Save">
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="main.js" type="text/javascript"></script>
+
+</body>
+</html>
